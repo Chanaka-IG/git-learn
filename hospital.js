@@ -104,7 +104,7 @@ const app1 = hospital.scheduleAppointment ("Dr. Smith","John Doe","2023-10-15","
 
 console.log(app1.getSummary());
 console.log("\nDoctor Smith's Appointments:");
-console.log(hospital.getAppointmentByDoctor("Dr. Smith"));
+console.log(hospital.getAppointmentByDoctor("Dr. khal"));
 
 
 
