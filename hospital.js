@@ -7,14 +7,14 @@ class Person {
 }
 
 class Doctor extends Person {
-    constructor (name,age,gender,specoalization){
+    constructor (name,age,gender,time,specialize){
         super(name,age,gender)
         this.appointmentTime = [];
-        this.specoalization = specoalization;
+        this.specialize = specialize;
     }
 
-    addAppointmentTime(time){
-        this.appointmentTime.push (time);
+    addAppointmentTime(appointemt){
+        this.appointmentTime.push (appointemt);
     }
 }
 
@@ -50,25 +50,61 @@ class Hospital {
         this.name = name;
         this.doctors = [];
         this.patients = [];
-        this.appointmentTimes = [];
+        this.appointments = [];
     }
     registerDoctor(doctor) {
-        // code to register a doctor
+        this.doctors.push(doctor);
     }   
     registerPatient(patient) {
-        // code to register a patient
+        this.patients.push(patient);
     }
     scheduleAppointment(doctor, patient, date, time, reason) {
-        // code to schedule an appointment
-    }
-    getAppointmentByDoctor(doctorName) {
+        const doc = this.doctors.find(d => d.name === doctor);
+        const pat = this.patients.find(p => p.name === patient);
+         if (!doc) {
+            console.log(`Doctor ${doctor} not found.`);
+            return;
+        }
+        if (!pat) {
+            console.log(`Patient ${patient} not found.`);
+            return;
+         }
+         const appointment  = new Appointments(doc,pat,date,time,reason)
+         doc.addAppointmentTime(appointment);
 
+        this.appointments.push(appointment);
+
+        return appointment;
+    
+        }
+    getAppointmentByDoctor(doctorName) {
+        const docn = this.doctors.find (d => d.name === doctorName);
+        if (!docn){
+            console.log (`Doctor ${doctorName} not found.`);
+            return;
+        }
+        return docn.appointmentTime;
     }
 
 }
 
+const hospital = new Hospital ("City Hospital");
+
 const doc1 = new Doctor ("Dr. Smith","45","Male");
+const doc2 = new Doctor ("Dr. Jane","38","Female");
 const pat1 = new Patient ("John Doe","30","Male");
+pat1.addMedicalRecord("Diagnosed with mild asthma");
+
+hospital.registerDoctor (doc1);
+hospital.registerDoctor (doc2);
+hospital.registerPatient (pat1);
+
+const app1 = hospital.scheduleAppointment ("Dr. Smith","John Doe","2023-10-15","10:00 AM","Regular Checkup");
+
+
+console.log(app1.getSummary());
+console.log("\nDoctor Smith's Appointments:");
+console.log(hospital.getAppointmentByDoctor("Dr. Smith"));
 
 
 
